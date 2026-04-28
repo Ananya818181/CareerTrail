@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Navbar, Container, Row, Col, Button, Form } from 'react-bootstrap'
+import { Navbar, Container, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Main.css'
 import LLM from './Components/LLM/LLM';
@@ -17,7 +17,6 @@ const Home = () => {
     const [singleResponse, setSingleResponse] = useState([])
     const [showSpinner, setShowSpinner] = useState(false)
 
-    const [isExportToPDFEnabled, setexportToPDFEnabled]= useState(true)
 
     const Analysis = async () => {
         setShowTextField(false)
@@ -115,30 +114,7 @@ const Home = () => {
         }
     };
 
-    const exportToPDF = () => {
-        const input = document.querySelector('.message-container'); 
     
-        html2canvas(input, {
-            scale: 2, // Increase scale for better quality
-            useCORS: true, // Handle cross-origin images
-            backgroundColor: null, // Preserve transparency or gradient background
-            logging: false, // Reduce console logs
-            scrollX: 0,
-            scrollY: -window.scrollY, // Handle scroll offsets
-            windowWidth: document.documentElement.offsetWidth, // Capture full width
-            windowHeight: document.documentElement.offsetHeight // Capture full height
-        })
-        .then((canvas) => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save('CareerTrail_Results.pdf'); // File name for download
-        })
-        .catch((err) => console.error('PDF Export Error:', err));
-    };
     
 
 
@@ -169,7 +145,7 @@ const Home = () => {
                         </Col>
                         <Col className="d-flex justify-content-center" xs={12} sm={12} md={12} lg={12} xl={12}>
                             <LLM showTextField={showTextField} showSpinner={showSpinner} singleResponse={singleResponse}
-                            isExportToPDFEnabledDF={isExportToPDFEnabled} />
+                             />
                         </Col>
                     </Row>
                 </div>

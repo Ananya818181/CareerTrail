@@ -6,8 +6,8 @@ import LLM from './Components/LLM/LLM';
 import Upload from './Components/FileUpload/Upload';
 import { endpoint } from './utils/Endpoint';
 import axios from 'axios'
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+
+
 
 const Home = () => {
 

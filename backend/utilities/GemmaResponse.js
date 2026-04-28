@@ -1,6 +1,6 @@
 const Groq = require("groq-sdk");
 require('dotenv').config();
-const groq = new Groq({ apiKey: process.env.API_KEY });
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const main = async (Content) => {
     try {
@@ -24,7 +24,7 @@ const GemmaResponse = async (Content) => {
                 content: Content,
             }
         ],
-        model: "gemma2-9b-it",
+        model: "llama-3.3-70b-versatile",
         temperature: 0.5,
         max_tokens: 1024,
         top_p: 1,

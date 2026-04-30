@@ -99,19 +99,27 @@ const Home = () => {
             alert("No file selected.");
         } else {
             try {
-                await axios.post(`${endpoint}/ResumeAnalysis/uploadResume`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                }).then((response) => {
-                    alert(response.data);
-                    setBtnDisabled(false)
-                });
+                const response = await axios.post(
+                    `${endpoint}/ResumeAnalysis/uploadResume`,
+                    formData,
+                    {
+                      headers: {
+                        "Content-Type": "multipart/form-data",
+                      },
+                    }
+                  );
+                  
+                  alert(response.data.message);
+                  setBtnDisabled(false);
             } catch (error) {
-                console.error('Error uploading file:', error);
-                alert('File upload failed.');
-            }
-        }
+                console.error("FULL ERROR:", error);
+              
+                if (error.response) {
+                  alert(error.response.data?.error || "Server error");
+                } else {
+                  alert("Network error");
+                }
+              }
     };
 
     

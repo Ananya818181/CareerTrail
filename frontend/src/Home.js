@@ -109,8 +109,7 @@ const Home = () => {
                     }
                   );
                   
-                  alert(response.data.message);
-                  setBtnDisabled(false);
+                  alert(JSON.stringify(response.data, null, 2));                  setBtnDisabled(false);
             } catch (error) {
                 console.error("FULL ERROR:", error);
               

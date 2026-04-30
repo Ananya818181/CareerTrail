@@ -3,19 +3,25 @@ const GetGemmaResponse = require('../utilities/GemmaResponse');
 
 exports.analysisControler = async (req, res) => {
     try {
-        // SUCCESS CHECK: In deployment, always use the path provided by multer
-        // This ensures you aren't pointing to a file that doesn't exist on the server
-        let resumePath = req.file ? req.file.path : 'uploads/resume.pdf'; 
+        // SUCCESS FIX: Check for the buffer in req.file
+        // memoryStorage provides the file data in req.file.buffer
+        if (!req.file || !req.file.buffer) {
+            return res.status(400).json({ 
+                error: "No resume data found", 
+                message: "Please upload your resume again." 
+            });
+        }
         
-        let resume = await PlainTextConversion(resumePath);
+        // Pass the buffer directly to the conversion utility
+        let resume = await PlainTextConversion(req.file.buffer);
 
-        // Define Prompts - Added ${resume} to all prompts to ensure AI context
+        // Define Prompts
         const prompt1 = `Here is the resume: ${resume}. Identify skill gaps and suggest learning resources.`;
         const prompt2 = `Here is the resume: ${resume}. Recommend specific online courses (free/paid) with platforms.`;
         const prompt3 = `Based on this resume: ${resume}, suggest real certifications from providers like AWS, Google, or Microsoft.`;
         const prompt4 = `Based on this resume: ${resume}, suggest 3 portfolio projects to improve their hireability.`;
 
-        // Parallel execution to prevent deployment timeouts (Render/Vercel have 10-30s limits)
+        // Parallel execution
         const [SkillsGaps, RecommendedCourse, RecommendedCertificates, ReleventProjects] = await Promise.all([
             GetGemmaResponse.main(prompt1),
             GetGemmaResponse.main(prompt2),
@@ -33,7 +39,6 @@ exports.analysisControler = async (req, res) => {
 
     } catch (error) {
         console.error('Analysis Error:', error);
-        // CRITICAL: Return JSON so the frontend spinner stops and shows the error
         return res.status(500).json({ 
             error: "Analysis failed", 
             message: error.message 

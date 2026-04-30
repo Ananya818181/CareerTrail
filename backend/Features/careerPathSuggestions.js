@@ -1,21 +1,25 @@
-const PlainTextConversion = require('../utilities/PlainTextConversion');
-const GemmaResponse = require('../utilities/GemmaResponse');
-
 exports.suggestCareerPaths = async (req, res) => {
     try {
-       
-        const resumePath = 'uploads/resume.pdf';
-        const Text = await PlainTextConversion(resumePath);
-      
-        // console.log("Extracted Text: ", Text);
+        console.log("Career API hit, file:", req.file?.originalname);
 
-        
+        if (!req.file || !req.file.buffer) {
+            return res.status(400).json({ 
+                message: "No resume file detected. Please upload your resume again." 
+            });
+        }
+
+        const Text = await PlainTextConversion(req.file.buffer);
+
+        if (!Text || Text.trim().length === 0) {
+            return res.status(400).json({
+                message: "Could not extract text from resume"
+            });
+        }
+
         const prompt = `Based on the following resume, suggest relevant career paths, industry trends, and future growth areas:
         Resume Text: "${Text}"
         
         Focus on skills, qualifications, and interests mentioned in the resume.`;
-
-        // console.log("Prompt for API:", prompt);
 
         const recommendedPaths = await GemmaResponse.main(prompt);
 
@@ -24,8 +28,13 @@ exports.suggestCareerPaths = async (req, res) => {
             recommendedPaths,
             Type: "Career",
         });
+
     } catch (error) {
-        console.error('Error processing resume upload:', error);
-        return res.status(500).json({ message: "Error processing the resume." });
+        console.error('Error processing career suggestions:', error);
+
+        return res.status(500).json({ 
+            message: "Failed to generate career suggestions",
+            error: error.message 
+        });
     }
 };

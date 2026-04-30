@@ -1,28 +1,29 @@
 const PdfParser = require('pdf-parse');
-const fs = require('fs');
-const path = require('path'); // Add this
 
-const PlainTextConversion = (filepath) => {
+/**
+ * Converts a PDF buffer into plain text.
+ * @param {Buffer} fileBuffer - The raw data buffer from multer memoryStorage.
+ */
+const PlainTextConversion = (fileBuffer) => {
     return new Promise((resolve, reject) => {
         try {
-            // Resolve the absolute path to ensure the file is found regardless of where the script runs
-            const absolutePath = path.resolve(filepath);
-            
-            if (!fs.existsSync(absolutePath)) {
-                return reject(new Error(`File not found at: ${absolutePath}`));
+            // Validate that we actually received a buffer
+            if (!fileBuffer || !Buffer.isBuffer(fileBuffer)) {
+                return reject(new Error("Invalid input: Expected a file buffer."));
             }
 
-            let dataBuffer = fs.readFileSync(absolutePath);
-            PdfParser(dataBuffer)
+            // pdf-parse accepts the buffer directly
+            PdfParser(fileBuffer)
                 .then((data) => {
+                    // Success: resolve with the extracted text
                     resolve(data.text);
                 })
                 .catch((error) => {
-                    console.error("Error while parsing PDF:", error);
+                    console.error("Error while parsing PDF buffer:", error);
                     reject(error);
                 });
         } catch (error) {
-            console.error("Error while reading file:", error);
+            console.error("Unexpected error in PlainTextConversion:", error);
             reject(error);
         }
     });

@@ -1,24 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const path = require('path'); // Add this for file paths
 const analysisController = require('../Features/ResumeAnalysis');
 const careerPathController = require("../Features/careerPathSuggestions");
 const SkillsRecommend = require('../Features/SkillsRecommendation');
 const mockInter = require('../Features/MockInterviews');
 const career = require('../Features/careerPathSuggestions');
 
-// CHANGE: Use diskStorage instead of memoryStorage for deployment
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Ensure this folder exists in your backend root
-    },
-    filename: (req, file, cb) => {
-        // Use a fixed name if your controller expects 'resume.pdf'
-        cb(null, 'resume.pdf');
-    }
-});
-
+// SUCCESS FIX: Use memoryStorage for Vercel/Serverless deployment
+// This avoids "Read-only file system" errors by keeping the file in RAM
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 router.post('/uploadResume', upload.single('file'), (req, res) => {
@@ -27,7 +18,8 @@ router.post('/uploadResume', upload.single('file'), (req, res) => {
         return res.status(400).json({ error: "No file uploaded" });
       }
   
-      console.log("File saved to uploads/resume.pdf");
+      // The file is now available at req.file.buffer instead of a path
+      console.log("File received in memory:", req.file.originalname);
       res.json({ message: "Upload successful" });
   
     } catch (err) {
@@ -36,9 +28,9 @@ router.post('/uploadResume', upload.single('file'), (req, res) => {
     }
   });
 
-router.post('/getcareerpaths', career.suggestCareerPaths);
-router.post('/getmockinterviews', mockInter);
-router.post('/getanalysis', analysisController.analysisControler);
-router.post('/getskillsrecommendation', SkillsRecommend.RecommendSkills);
+router.post('/getcareerpaths', upload.single('file'), career.suggestCareerPaths);
+router.post('/getmockinterviews', upload.single('file'), mockInter);
+router.post('/getanalysis', upload.single('file'), analysisController.analysisControler);
+router.post('/getskillsrecommendation', upload.single('file'), SkillsRecommend.RecommendSkills);
 
 module.exports = router;

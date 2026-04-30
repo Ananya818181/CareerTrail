@@ -33,19 +33,7 @@ const CustomCarousel = () => {
                             <div className="text-start">
                                 <h4>Meet the minds behind</h4>
                                 <div className='d-flex flex-column' >
-                                    <div>
-                                        <a href='https://www.linkedin.com/in/ananya-sharma-37b8a7296/' target="_blank" rel="noopener noreferrer"  style={{
-                                         color: 'white',
-                                         textDecoration: 'none',
-                                         padding: '5px 5px 5px 5px',
-                                         display: 'flex',
-                                         alignItems: 'center', 
-                                       }}>
-                                            <FaLinkedin size={30} color="#0077B5" />
-                                          ANANYA SHARMA 
-                                        </a>
                                     
-                                    </div>
                                     <div>
                                         <a href='https://www.linkedin.com/in/ananya-singh-28947528b/' target="_blank" rel="noopener noreferrer" style={{
                                          color: 'white',

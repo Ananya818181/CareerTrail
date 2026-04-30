@@ -7,8 +7,6 @@ import Upload from './Components/FileUpload/Upload';
 import { endpoint } from './utils/Endpoint';
 import axios from 'axios'
 
-
-
 const Home = () => {
 
     const [selectedFile, setSelectedFile] = useState(null);
@@ -17,14 +15,15 @@ const Home = () => {
     const [singleResponse, setSingleResponse] = useState(null)
     const [showSpinner, setShowSpinner] = useState(false)
 
-
     const Analysis = async () => {
         setShowTextField(false)
         setShowSpinner(true)
 
         try {
             await axios.post(`${endpoint}/ResumeAnalysis/getanalysis`).then((response) => {
-                setSingleResponse(response.data); alert(JSON.stringify(response.data, null, 2));            }).finally(() => {
+                setSingleResponse(response.data); 
+                alert(JSON.stringify(response.data, null, 2));
+            }).finally(() => {
                 setShowSpinner(false)
             })
         } catch (error) {
@@ -39,7 +38,9 @@ const Home = () => {
         try {
             await axios.post(`${endpoint}/ResumeAnalysis/getmockinterviews`).then((response) => {
                 setShowSpinner(false)
-                setSingleResponse(response.data); alert(JSON.stringify(response.data, null, 2));            })
+                setSingleResponse(response.data); 
+                alert(JSON.stringify(response.data, null, 2));
+            })
         } catch (error) {
             setShowSpinner(false)
             console.log("There was an issue while generating mock interview questions")
@@ -52,7 +53,9 @@ const Home = () => {
         try {
             await axios.post(`${endpoint}/ResumeAnalysis/getcareerpaths`).then((response) => {
                 setShowSpinner(false)
-                setSingleResponse(response.data); alert(JSON.stringify(response.data, null, 2));            })
+                setSingleResponse(response.data); 
+                alert(JSON.stringify(response.data, null, 2));
+            })
         } catch (error) {
             setShowSpinner(false)
             console.log("There was an issue while getting career path suggestions")
@@ -65,7 +68,9 @@ const Home = () => {
         try {
             await axios.post(`${endpoint}/ResumeAnalysis/getskillsrecommendation`).then((response) => {
                 setShowSpinner(false)
-                setSingleResponse(response.data); alert(JSON.stringify(response.data, null, 2));            })
+                setSingleResponse(response.data); 
+                alert(JSON.stringify(response.data, null, 2));
+            })
         } catch (error) {
             setShowSpinner(false)
             console.log("There was an issue while getting career path suggestions")
@@ -105,7 +110,8 @@ const Home = () => {
                     }
                   );
                   
-                  alert(JSON.stringify(response.data, null, 2));                  setBtnDisabled(false);
+                  alert(JSON.stringify(response.data, null, 2)); 
+                  setBtnDisabled(false);
             } catch (error) {
                 console.error("FULL ERROR:", error);
               
@@ -114,48 +120,39 @@ const Home = () => {
                 } else {
                   alert("Network error");
                 }
-              }
+            }
+        }
     };
-
-    
-    
-
-
 
     return (
         <>
-            
-                <div>
-                    <Navbar className="bg-body-tertiary ">
-                        <Container className='d-flex justify-content-center' >
-                            <Navbar.Brand href="#home" >
-                            <img
-                                    alt="logo"
-                                    src="./CareerTrail_logo.jpg"
-                                    width={100}
-                                    // height={30}
-                                    className="d-block align-middle rounded-circle shadow-box"
-                                />
-                            </Navbar.Brand>
-                        </Container>
-                    </Navbar>
+            <div>
+                <Navbar className="bg-body-tertiary ">
+                    <Container className='d-flex justify-content-center' >
+                        <Navbar.Brand href="#home" >
+                        <img
+                                alt="logo"
+                                src="./CareerTrail_logo.jpg"
+                                width={100}
+                                className="d-block align-middle rounded-circle shadow-box"
+                            />
+                        </Navbar.Brand>
+                    </Container>
+                </Navbar>
 
-                {/* New section below the navbar */}
                 <div className='grid-container' >
                     <Row className='h-100'>
                         <Col className="d-flex justify-content-center" xs={12} sm={12} md={12} lg={12} xl={12}>
                             <Upload feature1={Analysis} feature2={Mock} feature3={Career} feature4={Recommendation} handleFileChange={handleFileChange} handleSubmit={handleSubmit} btnDisabled={btnDisabled} setBtnDisabled={setBtnDisabled} />
                         </Col>
                         <Col className="d-flex justify-content-center" xs={12} sm={12} md={12} lg={12} xl={12}>
-                            <LLM showTextField={showTextField} showSpinner={showSpinner} singleResponse={singleResponse}
-                             />
+                            <LLM showTextField={showTextField} showSpinner={showSpinner} singleResponse={singleResponse} />
                         </Col>
                     </Row>
                 </div>
-
             </div>
         </>
     )
 }
 
-export default Home
+export default Home;

@@ -14,7 +14,7 @@ const Home = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [showTextField, setShowTextField] = useState(false)
     const [btnDisabled, setBtnDisabled] = useState(true)
-    const [singleResponse, setSingleResponse] = useState([])
+    const [singleResponse, setSingleResponse] = useState(null)
     const [showSpinner, setShowSpinner] = useState(false)
 
 
@@ -24,8 +24,7 @@ const Home = () => {
 
         try {
             await axios.post(`${endpoint}/ResumeAnalysis/getanalysis`).then((response) => {
-                setSingleResponse(response.data)
-            }).finally(() => {
+                setSingleResponse(response.data); alert(JSON.stringify(response.data, null, 2));            }).finally(() => {
                 setShowSpinner(false)
             })
         } catch (error) {
@@ -40,8 +39,7 @@ const Home = () => {
         try {
             await axios.post(`${endpoint}/ResumeAnalysis/getmockinterviews`).then((response) => {
                 setShowSpinner(false)
-                setSingleResponse(response.data)
-            })
+                setSingleResponse(response.data); alert(JSON.stringify(response.data, null, 2));            })
         } catch (error) {
             setShowSpinner(false)
             console.log("There was an issue while generating mock interview questions")
@@ -54,8 +52,7 @@ const Home = () => {
         try {
             await axios.post(`${endpoint}/ResumeAnalysis/getcareerpaths`).then((response) => {
                 setShowSpinner(false)
-                setSingleResponse(response.data)
-            })
+                setSingleResponse(response.data); alert(JSON.stringify(response.data, null, 2));            })
         } catch (error) {
             setShowSpinner(false)
             console.log("There was an issue while getting career path suggestions")
@@ -68,8 +65,7 @@ const Home = () => {
         try {
             await axios.post(`${endpoint}/ResumeAnalysis/getskillsrecommendation`).then((response) => {
                 setShowSpinner(false)
-                setSingleResponse(response.data)
-            })
+                setSingleResponse(response.data); alert(JSON.stringify(response.data, null, 2));            })
         } catch (error) {
             setShowSpinner(false)
             console.log("There was an issue while getting career path suggestions")
@@ -114,7 +110,7 @@ const Home = () => {
                 console.error("FULL ERROR:", error);
               
                 if (error.response) {
-                  alert(error.response.data?.error || "Server error");
+                    alert(JSON.stringify(error.response.data, null, 2));
                 } else {
                   alert("Network error");
                 }

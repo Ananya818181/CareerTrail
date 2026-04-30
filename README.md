@@ -144,7 +144,6 @@ CareerTrail/
 ## Contributors
 
 - Ananya Singh  
-- Ananya Sharma  
 - Mohammad Rashid
 
 ---

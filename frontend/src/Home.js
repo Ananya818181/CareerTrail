@@ -100,7 +100,7 @@ const Home = () => {
         e.preventDefault();
         if (!selectedFile) return alert("No file selected.");
         try {
-            const response = await axios.post(`${endpoint}/ResumeAnalysis/uploadResume`, createFormData(), config);
+            await axios.post(`${endpoint}/ResumeAnalysis/uploadResume`, createFormData(), config);
             alert("File uploaded successfully");
             setBtnDisabled(false);
         } catch (error) {

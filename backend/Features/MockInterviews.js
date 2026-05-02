@@ -1,22 +1,29 @@
-const PlainTextConversion = require('../utilities/PlainTextConversion');
 const generateResponse = require('../utilities/GenerateQuestions');
 const GetAnswers = require('../utilities/GetAnswers');
 
 const Mock = async (req, res) => {
     try {
+        // Validation belongs here, not in the utility file
         if (!req.file || !req.file.buffer) {
             return res.status(400).json({ error: "No file uploaded" });
         }
 
-        const text = await PlainTextConversion(req.file.buffer);
+        // 1. Generate Questions
+        const Questions = await generateResponse(req.file.buffer);
 
-        const Questions = await generateResponse(text);
-        const answers = await GetAnswers.Answers(Questions);
+        // 2. Generate Answers using the utility
+        // Since we exported 'Answers' directly, we call 'GetAnswers' as a function
+        const answers = await GetAnswers(Questions);
 
-        return res.json({ Questions, answers, Type: "Mock" });
+        // 3. Send the final JSON back to the frontend
+        return res.json({ 
+            Questions, 
+            answers, 
+            Type: "Mock" 
+        });
 
     } catch (error) {
-        console.error(error);
+        console.error("Mock Interview Controller Error:", error);
         res.status(500).json({ error: error.message });
     }
 };

@@ -1,3 +1,5 @@
+const PlainTextConversion = require('../utilities/PlainTextConversion');
+const GemmaResponse = require('../utilities/GemmaResponse');
 exports.RecommendSkills = async (req, res) => {
     try {
         if (!req.file || !req.file.buffer) {

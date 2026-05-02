@@ -1,16 +1,21 @@
-const generateResponse = require('./GenerateQuestions');
 const GemmaResponse = require('./GemmaResponse');
 
 const Answers = async (Questions) => {
-    try {        
-        const prompt = `You are given with questions for a mock interview : ${Questions}, you have to answer it, every question.`;
-        const answers = await GemmaResponse.main(prompt);
+    try {
+        const prompt = `You are an expert technical interviewer. 
+        Below is a list of interview questions: 
+        "${Questions}"
+        
+        Please provide a detailed, professional, and concise example answer for EACH question. 
+        Format your response clearly using bullet points for each answer.`;
 
-        return answers;
-
+        const response = await GemmaResponse.main(prompt);
+        return response || "No answers could be generated.";
     } catch (error) {
-        console.error(error);
+        console.error("Error in GetAnswers utility:", error);
+        return "An error occurred while generating answers.";
     }
 };
 
-module.exports = { Answers };
+// This exports the function directly for easier access
+module.exports = Answers;

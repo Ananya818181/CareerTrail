@@ -32,10 +32,10 @@ const Home = () => {
         try {
             const response = await axios.post(`${endpoint}/ResumeAnalysis/getanalysis`, createFormData(), config);
             setSingleResponse(response.data);
-            alert(JSON.stringify(response.data, null, 2));
+           // alert(JSON.stringify(response.data, null, 2));
         } catch (error) {
             console.error("Analysis error:", error);
-            alert(JSON.stringify(error.response?.data || "Analysis failed", null, 2));
+           // alert(JSON.stringify(error.response?.data || "Analysis failed", null, 2));
         } finally {
             setShowSpinner(false);
         }
@@ -48,7 +48,7 @@ const Home = () => {
         try {
             const response = await axios.post(`${endpoint}/ResumeAnalysis/getmockinterviews`, createFormData(), config);
             setSingleResponse(response.data);
-            alert(JSON.stringify(response.data, null, 2));
+           // alert(JSON.stringify(response.data, null, 2));
         } catch (error) {
             console.error("Mock interview error:", error);
         } finally {
@@ -63,7 +63,7 @@ const Home = () => {
         try {
             const response = await axios.post(`${endpoint}/ResumeAnalysis/getcareerpaths`, createFormData(), config);
             setSingleResponse(response.data);
-            alert(JSON.stringify(response.data, null, 2));
+           // alert(JSON.stringify(response.data, null, 2));
         } catch (error) {
             console.error("Career path error:", error);
         } finally {
@@ -78,7 +78,7 @@ const Home = () => {
         try {
             const response = await axios.post(`${endpoint}/ResumeAnalysis/getskillsrecommendation`, createFormData(), config);
             setSingleResponse(response.data);
-            alert(JSON.stringify(response.data, null, 2));
+           // alert(JSON.stringify(response.data, null, 2));
         } catch (error) {
             console.error("Recommendation error:", error);
         } finally {
@@ -101,7 +101,7 @@ const Home = () => {
         if (!selectedFile) return alert("No file selected.");
         try {
             const response = await axios.post(`${endpoint}/ResumeAnalysis/uploadResume`, createFormData(), config);
-            alert(JSON.stringify(response.data, null, 2));
+            alert("File uploaded successfully");
             setBtnDisabled(false);
         } catch (error) {
             alert(JSON.stringify(error.response?.data || "Network error", null, 2));

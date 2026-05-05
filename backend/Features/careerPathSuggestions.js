@@ -1,3 +1,5 @@
+const PlainTextConversion = require('../utilities/PlainTextConversion');
+const GemmaResponse = require('../utilities/GemmaResponse');
 exports.suggestCareerPaths = async (req, res) => {
     try {
         console.log("Career API hit, file:", req.file?.originalname);
